@@ -6,6 +6,8 @@ Unix 'kill' wrapper extension.
 
 Synopsis: <trigger> <filter>"""
 
+#  Copyright (c) 2022 Manuel Schneider
+
 import os
 from signal import SIGKILL, SIGTERM
 
