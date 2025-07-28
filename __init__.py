@@ -14,7 +14,7 @@ md_version = "2.0"
 md_name = "Kill Process"
 md_description = "Kill processes"
 md_license = "MIT"
-md_url = "https://github.com/albertlauncher/python/tree/main/kill"
+md_url = "https://github.com/albertlauncher/albert-plugin-python-kill"
 md_authors = ["@Pete-Hamlin", "@BenedictDwudel", "@ManuelSchneid3r"]
 
 
