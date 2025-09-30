@@ -9,13 +9,13 @@ from signal import SIGKILL, SIGTERM
 
 from albert import *
 
-md_iid = "3.0"
+md_iid = "4.0"
 md_version = "2.0"
 md_name = "Kill Process"
 md_description = "Kill processes"
 md_license = "MIT"
 md_url = "https://github.com/albertlauncher/albert-plugin-python-kill"
-md_authors = ["@Pete-Hamlin", "@BenedictDwudel", "@ManuelSchneid3r"]
+md_authors = ["@Pete-Hamlin", "@BenedictDudel", "@ManuelSchneid3r"]
 md_maintainers = ["@Pete-Hamlin"]
 md_platforms = ["Linux"]
 
@@ -50,7 +50,7 @@ class Plugin(PluginInstance, TriggerQueryHandler):
                         results.append(
                             StandardItem(
                                 id="kill",
-                                iconUrls=["xdg:process-stop"],
+                                iconFactory=lambda: makeGraphemeIcon("💀"),
                                 text=proc_command,
                                 subtext=proc_cmdline,
                                 actions=[
