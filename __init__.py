@@ -50,7 +50,7 @@ class Plugin(PluginInstance, TriggerQueryHandler):
                         results.append(
                             StandardItem(
                                 id="kill",
-                                iconFactory=lambda: makeGraphemeIcon("💀"),
+                                icon_factory=lambda: makeGraphemeIcon("💀"),
                                 text=proc_command,
                                 subtext=proc_cmdline,
                                 actions=[
