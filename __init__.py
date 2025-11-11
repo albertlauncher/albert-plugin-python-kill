@@ -9,7 +9,7 @@ from signal import SIGKILL, SIGTERM
 from albert import *
 import psutil
 
-md_iid = "4.0"
+md_iid = "5.0"
 md_version = "2.0.1"
 md_name = "Kill Process"
 md_description = "Kill processes"
@@ -25,22 +25,23 @@ class RankedItem:
     score: float
 
 
-class Plugin(PluginInstance, TriggerQueryHandler):
+class Plugin(PluginInstance, GeneratorQueryHandler):
+
     def __init__(self):
         PluginInstance.__init__(self)
-        TriggerQueryHandler.__init__(self)
+        GeneratorQueryHandler.__init__(self)
 
     def defaultTrigger(self):
         return "kill "
 
-    def handleTriggerQuery(self, query):
+    def items(self, ctx):
         results = []
         uid = os.getuid()
-        matcher = Matcher(query.string)
+        matcher = Matcher(ctx.query)
 
         for proc in psutil.process_iter(["pid", "name", "cmdline", "uids"]):
 
-            if not query.isValid:
+            if not ctx.isValid:
                 return
 
             try:
@@ -77,4 +78,4 @@ class Plugin(PluginInstance, TriggerQueryHandler):
                 warning(f"{e.__class__.__name__}: {e}")
                 continue
 
-        query.add([r.item for r in sorted(results, key=lambda x: x.score, reverse=True)])
+        yield [r.item for r in sorted(results, key=lambda x: x.score, reverse=True)]
