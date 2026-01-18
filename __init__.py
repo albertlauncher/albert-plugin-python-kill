@@ -56,7 +56,7 @@ class Plugin(PluginInstance, GeneratorQueryHandler):
                     results.append(RankedItem(
                         item=StandardItem(
                             id="kill",
-                            icon_factory=lambda: makeGraphemeIcon("💀"),
+                            icon_factory=lambda: Icon.grapheme("💀"),
                             text=name,
                             subtext=cmdline,
                             actions=[
