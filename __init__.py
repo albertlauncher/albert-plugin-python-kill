@@ -10,7 +10,7 @@ from albert import *
 import psutil
 
 md_iid = "5.0"
-md_version = "2.0.1"
+md_version = "2.1.0"
 md_name = "Kill Process"
 md_description = "Kill processes"
 md_license = "MIT"
