@@ -9,7 +9,7 @@ from signal import SIGKILL, SIGTERM
 from albert import *
 import psutil
 
-md_iid = "5.0"
+md_iid = "6.0"
 md_version = "2.1.0"
 md_name = "Kill Process"
 md_description = "Kill processes"
