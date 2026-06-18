@@ -19,12 +19,6 @@ md_authors = ["@Pete-Hamlin", "@BenedictDudel", "@ManuelSchneid3r"]
 md_maintainers = ["@Pete-Hamlin", "@ManuelSchneid3r"]
 md_lib_dependencies = ["psutil"]
 
-@dataclasses.dataclass
-class RankedItem:
-    item: StandardItem
-    match: Match
-
-
 class Plugin(PluginInstance, GeneratorQueryHandler):
 
     def __init__(self):
@@ -66,33 +60,20 @@ class Plugin(PluginInstance, GeneratorQueryHandler):
     @staticmethod
     def _make_item(proc: Process):
         return StandardItem(
-            id="kill",
+            id=proc.name,
             icon_factory=lambda: Icon.grapheme("💀"),
             text=proc.name,
             subtext=proc.cmdline,
             actions=[
-                Action(
-                    "terminate",
-                    "Terminate",
-                    lambda pid_=proc.pid: os.kill(pid_, SIGTERM),
-                ),
-                Action(
-                    "kill",
-                    "Kill",
-                    lambda pid_=proc.pid: os.kill(pid_, SIGKILL),
-                )
+                Action("terminate", "Terminate", lambda pid_=proc.pid: os.kill(pid_, SIGTERM)),
+                Action("kill", "Kill", lambda pid_=proc.pid: os.kill(pid_, SIGKILL))
             ]
         )
 
     def items(self, ctx):
+        rank_items = RankItemList()
         matcher = Matcher(ctx.query, MatchConfig(fuzzy=self.fuzzy))
-
-        rank_items = [
-            RankedItem(self._make_item(proc), matcher.match(proc.name, proc.cmdline))
-            for proc in self._get_user_processes(os.getuid())
-        ]
-
-        yield [
-            r.item for r in sorted(rank_items, key=lambda x: x.match.score, reverse=True)
-            if r.match.isMatch()
-        ]
+        for proc in self._get_user_processes(os.getuid()):
+            if m := matcher.match(proc.name, proc.cmdline):
+                rank_items.append(RankItem(self._make_item(proc), m))
+        yield from self.lazySort(rank_items, ctx.usage_scoring)
